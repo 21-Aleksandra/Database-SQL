@@ -1,0 +1,256 @@
+--Create
+
+--Izveido tabulu library ar laukiem, kuros glābajas informācija par bibliotēku kontāktinformāciju, grāmatu skaitu un t.t.
+create table library (
+ID char(6) primary key,
+title nvarchar(max) not null,
+addr nvarchar(80) not null, 
+book_count int,
+workdays nvarchar(60) not null default 'Pr, Ot, Tr, Ct, Pk',
+start_from time not null,
+end_to time not null,
+disabled_ok bit not null default 0,
+)
+
+--Izveido tabulu publishing ar laukiem, kuros glābajas informācija par izdevniecības nosaukummiem, adresem
+create table publishing (
+ID char(6) primary key,
+title nvarchar(max) not null,
+addr nvarchar(80) not null,
+)
+
+--Izveido tabulu book ar laukiem, kuros glābajas informācija par grāmatu nosaukumiem, izdevniecības gadu, atrāšanas vietu, lappušu skaitu un t.t.
+create table book(
+ID int identity(1234,1) primary key,
+title nvarchar(max) not null,
+author nvarchar(max) not null,
+published char(6) not null foreign key references publishing,
+lib char(6) not null foreign key references library,
+pub_year int not null,
+pages int ,
+genre nvarchar(40) ,
+)
+
+
+
+
+
+
+--Insert
+
+--Ievieto tabulas library noteiktājos laukos informāciju par bibliotēku
+
+INSERT INTO library (ID, title, addr, book_count, start_from, end_to) VALUES('BIĶERF','Biķernieku filiālbibliotēka','Burtnieku iela 37', 2354, '8:30', '17:30')
+
+INSERT INTO library (ID, title, addr, start_from, end_to) VALUES ('JAUNCF','Jaunciema filiālbibliotēka','Gaileņu iela 5', '7:00', '16:00')
+
+INSERT INTO library (ID, title, addr, book_count, workdays, start_from, end_to, disabled_ok) VALUES ('ZIEMEF', 'Ziemeļblāzmas filiālbibliotēka', 'Ziemeļblāzmas iela 36', 3456, 'Ct, Pk, Sv', '9:00', '18:00', 1)
+
+INSERT INTO library (ID, title, addr, book_count, workdays, start_from, end_to, disabled_ok) VALUES('PĻAVNF','Pļavnieku filiālbibliotēka','Salnas iela 8', 4567, 'Pr, Ot,  Pk, Sv ' , '8:15 ', '17:25 ',1)
+
+INSERT INTO library (ID, title, addr, book_count, workdays, start_from, end_to) VALUES('ĶENGAF','Ķengaraga filiālbibliotēka','Maskavas iela 271A', 5005, 'Ot, Ct, Se, Sv', ' 9:00', ' 19:00' )
+
+INSERT INTO library (ID, title, addr, book_count, start_from, end_to , disabled_ok) VALUES('SARKAF','Sarkandaugavas filiālbibliotēka','Aptiekas iela 14A', 7212, ' 9:00', ' 19:00' ,1 )
+
+
+--Ievieto informāciju tabulā library, nenoradot laukus, bet rakstot secīgi katra lauka vērtību, neizlaižot nevienu
+
+INSERT INTO library VALUES ('TORŅAF','Torņakalna filiālbibliotēka', 'Meža iela 8', NULL, 'Slēgta līdz 29.12', '00:00', '00:00', 0)
+
+
+
+
+--Ievieto tabulas publishing noteiktājos laukos informāciju par izdevniecību
+
+INSERT INTO publishing (ID, title, addr) VALUES('ZVAIGZ',' Apgāds Zvaigzne ABC ', 'Krišjāņa Valdemāra iela 6 ')
+
+INSERT INTO publishing (ID, title, addr) VALUES('VALRAP',' Valters un Rapa', 'Aspazijas bulvāris 24')
+
+INSERT INTO publishing (ID, title, addr) VALUES('LIELMA',' Liels un mazs', 'Tērbatas iela 49/51')
+
+INSERT INTO publishing (ID, title, addr) VALUES('ZELABL',' Zelta ābele', 'Marijas iela 23')
+
+INSERT INTO publishing (ID, title, addr) VALUES('GRAMDR',' Grāmatu draugs', 'Mārupes iela 7')
+
+
+--Ievieto informāciju tabulā publishing, nenoradot laukus, bet rakstot secīgi katra lauka vērtību, neizlaižot nevienu
+
+INSERT INTO publishing VALUES ('JUMAVA',' Apgāds Jumava', 'Dzirnavu iela 73')
+
+
+
+--Ievieto tabulas book noteiktājos laukos informāciju par grāmatam
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Alises piedzīvojumi Brīnumzemē', 'Lūiss Kerols ', 'LIELMA', 'ĶENGAF',2013, 104, 'Fantastika' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Alises piedzīvojumi Brīnumzemē', 'Lūiss Kerols ', 'LIELMA', 'JAUNCF',2008, 107, 'Fantastika' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Harijs Poters un Filozofu akmens', 'Džoanna Roulinga ', 'ZVAIGZ', 'SARKAF',2003, 256, 'Fantāzija' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Pasakas par ziediem', 'Anna Sakse ', 'JUMAVA', 'SARKAF',1999, 120, 'Fantāzija' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Noveles ', 'Rūdolfs Blaumanis ', 'ZELABL', 'ZIEMEF',1986, 500, 'Novele' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Uz kraujas rudzu laukā', 'Džeroms Deivids Selindžers', 'VALRAP', 'BIĶERF',2000, 214, 'Romāns' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Mušu valdnieks', 'Viljams Goldings', 'VALRAP', 'SARKAF',2006, 169, 'Romāns' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Citādie ', 'Veronika Rota', 'ZVAIGZ' , 'BIĶERF',2020, 400, 'Romāns' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('1984', 'Džordžs Orvels ', 'VALRAP', 'PĻAVNF ',2010, 326, 'Fantastika ' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Austrumu ekspresis', 'Agata Kristi ', 'GRAMDR', 'SARKAF',2004, 326, 'Detektīvs' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Etīde purpura toņos', 'Arturs Konans Doils', 'ZVAIGZ', 'ZIEMEF',2000, 378, 'Detektīvs' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Institūts', 'Stīvens Kings ', 'GRAMDR', 'PĻAVNF',2020, 416, 'Šausmas' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Tas', 'Stīvens Kings ', 'ZVAIGZ', 'PĻAVNF',2007, 445, 'Šausmas' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Drakula', 'Brems Stokers ', 'JUMAVA', 'BIĶERF',2001, 348, 'Šausmas' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Ktulhu mītu ', 'Hovards Filips Lavkrafts ', 'JUMAVA', 'JAUNCF ',2009,408, 'Šausmas' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Rudens lauskas ', 'Linda Marija Kundziša ', 'ZELABL', 'ZIEMEF',2017, 338, 'Mistika' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Karš un miers ', 'Ļevs Tolstojs', 'GRAMDR', 'BIĶERF',1997, 1000, 'Romāns' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Mans kaķis ', 'Linda Emberga', 'LIELMA', 'TORŅAF',2017, 233, 'Fantastika ' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Romeo un Džuljeta ', 'Viljams Šekspīrs', 'VALRAP', 'ĶENGAF',2011, 197, 'Traģēdija' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Daba', 'Viljams Šekspīrs', 'VALRAP', 'ĶENGAF',2003, 203, 'Romāns' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Kurš to izdarīja?', 'Agata Kristi ', 'GRAMDR', 'SARKAF',2008, 376, 'Detektīvs' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Marijas noslēpums', 'Agata Kristi ', 'GRAMDR', 'SARKAF',2010, 233, 'Romāns' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Karoline', 'Lūiss Kerols ', 'LIELMA', 'ĶENGAF',2012, 109, 'Fantastika' )
+
+
+--Ievieto informāciju tabulā book, nenoradot laukus, bet rakstot secīgi katra lauka vērtību, neizlaižot nevienu
+
+INSERT INTO book VALUES ('Dzīve', 'Jānis Kalniņš', 'VALRAP', 'TORŅAF',2019, 233, 'Fantastika' )
+
+INSERT INTO book VALUES ('Bimbo un es ', 'Marija Ivanova', 'LIELMA', 'SARKAF',2012, NULL, NULL )
+
+INSERT INTO book VALUES ('Drosme ', 'Līga Kalniņa', 'LIELMA', 'TORŅAF',2010, 234, NULL)
+
+
+
+
+
+
+--Join
+--Izdot informāciju(nosaukumu, izdošanas gadu, žanru) par grāmatam, kuru žanrs ir noradīts un vienlaikus filiāle nav Pļavinieku, un vienlaikus izdevniecība ir LIE/kaut-kas vai kaut-kas/RAP
+-- Rezultātus sakarto pēc grāmatu izdošanas gāda dilstošā secībā
+
+SELECT book.title as Nosaukums, genre as Žanrs, pub_year as Gads, library.title as Filiāle, publishing.title as Izdevniecība
+FROM book
+JOIN library ON book.lib=library.ID
+JOIN publishing ON book.published=publishing.ID
+WHERE genre IS NOT NULL and (library.id!='PĻAVINF') and (publishing.ID like 'LIE%' or publishing.ID like '%RAP')
+order by pub_year desc
+
+
+
+
+
+
+--Group by
+
+-- Izvēlas katras grāmatas žanru un lpp skaitu un gadu
+-- Izņemot tos, kur žanrs nav noradīts
+
+SELECT genre as Žanrs, pages as Lpp_skaits, pub_year as Gads
+FROM book
+WHERE genre is not NULL
+
+
+
+--Sagrupē grāmatas pēc žanra un parada dilstoša secībā, kāds ir kopējais lappaspušu skaits un vidējais izdošanas gads grāmatam ar noteikto žanru
+--Arī parāda tikai tos žanrus, kur kopējais lpp skaits ir vairāk par 400(agregātfunkc. izmanto having, nevis where)
+-- NULL netiek uzskatīts par žanru
+
+SELECT genre as Žanrs, SUM(pages) as Lpp_Summa, avg(pub_year*1.0) as Vid_gads
+FROM book
+WHERE genre is not NULL
+GROUP BY genre
+HAVING SUM(pages)>400
+ORDER BY Lpp_Summa desc
+
+
+
+--Join un Group by
+
+--Parāda, cik noteikta autora grāmatu ir katrā filiālē(galīga grupēšana pēc pēdeja noradīta)
+--Sakumā sagrupē pēc autora, tad pēc filiāles. Tas nozīme, ka ja ir divas autora grāmatas, bet dažadas bibliotēkas, pierasrījums atgriezis 2 rindas par to autoru,
+-- un katrā būs skaits kāda filiālē. Pretēja gadījumā būtu tā, kā jā kāda bibliotēka ir 2 grāmatas, bet no dažadiem autoriem, tad pieprasijums atgrieztu 2 rindas par
+-- to bibliotēku, un katrā būtu skaits kadām autoram
+
+SELECT book.author as Autors, library.title as Filiāle, COUNT(*) as Grāmatu_skaits
+FROM book
+JOIN library ON book.lib = library.ID
+GROUP BY book.author, library.title
+
+
+
+-- Parāda, cik katra adrese ir grāmatu ar noteiktu žanru (galīga grupēšana pēc pēdeja noradīta)
+SELECT library.addr as Adrese, book.genre as Žanrs, COUNT(book.ID) Skaits
+FROM library
+JOIN book ON library.ID = book.lib
+GROUP BY book.genre, library.addr
+
+
+
+--Apakšvaicājums
+
+--Pārada, cik katrā bibliotēkā ir grāmatu un grāmatu unikālo autoru, kuru vārdi nesākas ar A un B 
+SELECT library.title as Filiāle,  (select COUNT(*) from book where book.lib = library.ID) as Grāmatu_skaits,
+(select COUNT(DISTINCT author) from book where book.lib = library.ID and (author NOT LIKE 'A%' AND author NOT LIKE 'B%') ) as Autori
+FROM library
+
+
+
+
+
+--Pārbaudes vaicājumi
+
+SELECT COUNT(*) AS BIĶER_SKAITS from book where book.lib = 'BIĶERF'
+
+SELECT COUNT(DISTINCT author) as Unikālie from book where book.lib = 'BIĶERF' and (author NOT LIKE 'A%' AND author NOT LIKE 'B%') 
+
+
+
+
+--Apakšvaicājums 2
+
+--Izvēleties tas rindas, kur grāmatu publicēšanas gads ir lielāks par vidējo
+SELECT * FROM book
+WHERE pub_year > (SELECT AVG(pub_year) FROM book)
+ORDER BY pub_year desc
+
+--Pārbaude
+SELECT AVG(pub_year)as vid_gads FROM book 
+
+--Izvēleties tas grāmatu nosaukumus un lappušu skaitu, kur lappušu skaits ir mazāks par vidējo lappušu skaitu visiem romāniem
+SELECT book.title as Nosaukums, book.pages as Lpp
+FROM book
+WHERE pages> (SELECT AVG(pages) as average_pages FROM book WHERE genre = 'Romāns')
+ORDER BY pages desc
+
+--Pārbaude
+SELECT AVG(pages) as average FROM book WHERE genre = 'Romāns'
+
+
+
+
+--Drop
+--Tabulu dzēšanas skripti, sākumā izdzēš datus, pēc tam dzēš tabulas. Pirmkārt to izdara priekš book, jo tai ir FR no 2 blakus esošajam tabulam
+
+DELETE book
+DELETE library
+DELETE publishing
+DROP TABLE book
+DROP TABLE library
+DROP TABLE publishing

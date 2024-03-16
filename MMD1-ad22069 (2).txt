@@ -1,0 +1,146 @@
+--Create
+
+create table library (
+ID char(6) primary key,
+title nvarchar(max) not null,
+addr nvarchar(80) not null, 
+book_count int,
+workdays nvarchar(60) not null default 'Pr, Ot, Tr, Ct, Pk',
+start_from time not null,
+end_to time not null,
+disabled_ok bit not null default 0,
+)
+
+create table publishing (
+ID char(6) primary key,
+title nvarchar(max) not null,
+addr nvarchar(80) not null,
+)
+
+create table book(
+ID int identity(1234,1) primary key,
+title nvarchar(max) not null,
+author nvarchar(max) not null,
+published char(6) not null foreign key references publishing,
+lib char(6) not null foreign key references library,
+pub_year int not null,
+pages int ,
+genre nvarchar(40) ,
+)
+
+
+--Insert
+
+INSERT INTO library (ID, title, addr, book_count, start_from, end_to) VALUES('BIĶERF','Biķernieku filiālbibliotēka','Burtnieku iela 37', 2354, '8:30', '17:30')
+
+INSERT INTO library (ID, title, addr, start_from, end_to) VALUES ('JAUNCF','Jaunciema filiālbibliotēka','Gaileņu iela 5', '7:00', '16:00')
+
+INSERT INTO library (ID, title, addr, book_count, workdays, start_from, end_to, disabled_ok) VALUES ('ZIEMEF', 'Ziemeļblāzmas filiālbibliotēka', 'Ziemeļblāzmas iela 36', 3456, 'Ct, Pk, Sv', '9:00', '18:00', 1)
+
+INSERT INTO library (ID, title, addr, book_count, workdays, start_from, end_to, disabled_ok) VALUES('PĻAVNF','Pļavnieku filiālbibliotēka','Salnas iela 8', 4567, 'Pr, Ot,  Pk, Sv ' , '8:15 ', '17:25 ',1)
+
+INSERT INTO library (ID, title, addr, book_count, workdays, start_from, end_to) VALUES('ĶENGAF','Ķengaraga filiālbibliotēka','Maskavas iela 271A', 5005, 'Ot, Ct, Se, Sv', ' 9:00', ' 19:00' )
+
+INSERT INTO library (ID, title, addr, book_count, start_from, end_to , disabled_ok) VALUES('SARKAF','Sarkandaugavas filiālbibliotēka','Aptiekas iela 14A', 7212, ' 9:00', ' 19:00' ,1 )
+
+INSERT INTO library VALUES ('TORŅAF','Torņakalna filiālbibliotēka', 'Meža iela 8', NULL, 'Slēgta līdz 29.12', '00:00', '00:00', 0)
+
+
+INSERT INTO publishing (ID, title, addr) VALUES('ZVAIGZ',' Apgāds Zvaigzne ABC ', 'Krišjāņa Valdemāra iela 6 ')
+
+INSERT INTO publishing (ID, title, addr) VALUES('VALRAP',' Valters un Rapa', 'Aspazijas bulvāris 24')
+
+INSERT INTO publishing (ID, title, addr) VALUES('LIELMA',' Liels un mazs', 'Tērbatas iela 49/51')
+
+INSERT INTO publishing (ID, title, addr) VALUES('ZELABL',' Zelta ābele', 'Marijas iela 23')
+
+INSERT INTO publishing (ID, title, addr) VALUES('GRAMDR',' Grāmatu draugs', 'Mārupes iela 7')
+
+INSERT INTO publishing VALUES ('JUMAVA',' Apgāds Jumava', 'Dzirnavu iela 73')
+
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Alises piedzīvojumi Brīnumzemē', 'Lūiss Kerols ', 'LIELMA', 'ĶENGAF',2013, 104, 'Fantastika' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Alises piedzīvojumi Brīnumzemē', 'Lūiss Kerols ', 'LIELMA', 'JAUNCF',2008, 107, 'Fantastika' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Harijs Poters un Filozofu akmens', 'Džoanna Roulinga ', 'ZVAIGZ', 'SARKAF',2003, 256, 'Fantāzija' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Pasakas par ziediem', 'Anna Sakse ', 'JUMAVA', 'SARKAF',1999, 120, 'Fantāzija' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Noveles ', 'Rūdolfs Blaumanis ', 'ZELABL', 'ZIEMEF',1986, 500, 'Novele' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Uz kraujas rudzu laukā', 'Džeroms Deivids Selindžers', 'VALRAP', 'BIĶERF',2000, 214, 'Romāns' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Mušu valdnieks', 'Viljams Goldings', 'VALRAP', 'SARKAF',2006, 169, 'Romāns' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Citādie ', 'Veronika Rota', 'ZVAIGZ' , 'BIĶERF',2020, 400, 'Romāns' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('1984', 'Džordžs Orvels ', 'VALRAP', 'PĻAVNF ',2010, 326, 'Fantastika ' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Austrumu ekspresis', 'Agata Kristi ', 'GRAMDR', 'SARKAF ',2004, 326, 'Detektīvs' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Etīde purpura toņos', 'Arturs Konans Doils', 'ZVAIGZ', 'ZIEMEF',2000, 378, 'Detektīvs' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Institūts', 'Stīvens Kings ', 'GRAMDR', 'PĻAVNF',2020, 416, 'Šausmas' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Tas', 'Stīvens Kings ', 'ZVAIGZ', 'PĻAVNF',2007, 445, 'Šausmas' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Drakula', 'Brems Stokers ', 'JUMAVA', 'BIĶERF',2001, 348, 'Šausmas' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Ktulhu mītu ', 'Hovards Filips Lavkrafts ', 'JUMAVA', 'JAUNCF ',2009,408, 'Šausmas' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Rudens lauskas ', 'Linda Marija Kundziša ', 'ZELABL', 'ZIEMEF',2017, 338, 'Mistika' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Karš un miers ', 'Ļevs Tolstojs', 'GRAMDR', 'BIĶERF',1997, 1000, 'Romāns' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Mans kaķis ', 'Linda Emberga', 'LIELMA', 'TORŅAF',2017, 233, 'Fantastika ' )
+
+INSERT INTO book (title,author,published,lib,pub_year,pages, genre) VALUES('Romeo un Džuljeta ', 'Viljams Šekspīrs', 'VALRAP', 'ĶENGAF',2011, 197, 'Traģēdija' )
+
+INSERT INTO book VALUES ('Dzīve', 'Jānis Kalniņš', 'VALRAP', 'TORŅAF',2019, 233, 'Fantastika' )
+
+INSERT INTO book VALUES ('Bimbo un es ', 'Marija Ivanova', 'LIELMA', 'SARKAF',2012, NULL, NULL )
+
+INSERT INTO book VALUES ('Drosme ', 'Līga Kalniņa', 'LIELMA', 'TORŅAF',2010, 234, NULL)
+
+
+
+--Select
+
+
+SELECT * FROM book WHERE pub_year>2000 and (genre like 'Fan%' or genre like '%ktīvs')
+order by pages desc, pub_year desc
+
+-- izvēlās visus laukus no tabulas(relācijas) books, kur izdošanas gads ir lielāks par 2000 un žanrs ir 'Fan'+kaut kas vai kaut kas+'ktīvs'
+-- rezultātu vispirms sakārto dilstošā secībā, ņemot vēra lapaspušu skaitu, tad, ja kādam grāmatām ir vienāds lapaspušu skaits,
+-- tad vispirms parāda jaunāko pēc gada vērtības (ja vien nejauši nav tā, kā jaunāka grāmata ar tādu pašu lpp skaitu bija ievietota pirms vecākas - tad nekas nemainās)
+
+
+
+Join:
+
+SELECT library.title as Filiāle, library.addr as Adrese, end_to Darbojas_līdz, workdays as Darbadienas, book.title as Nosaukums, pages as Lpp, publishing.title as Izdevniecība
+FROM library 
+JOIN book ON library.ID=lib
+JOIN publishing ON publishing.ID=published  
+WHERE pages>200 and genre!='Mistika' and (library.ID='SARKAF' or library.ID='ZIEMEF') 
+order by end_to desc
+
+
+-- Izdod informāciju par ZIEMEF/SARKAF filiāļu pilnajiem nosaukumiem ,adresēm un darbadienām, to beigu laikiem(dilstoša secība), kā arī parada, kuras grāmatas bez žanra 'Mistika' ar 200+ lapaspusēm var tajos atrast.
+-- Klāt grāmatam ir izdevniecības nosaukumu
+
+
+--Delete
+
+DELETE book
+DELETE library
+DELETE publishing
+DROP TABLE book
+DROP TABLE library
+DROP TABLE publishing
+
+
+
+
+
